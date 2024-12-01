@@ -1,3 +1,4 @@
+import { dependencyTrackerContext } from "./effect";
 import { isUpdateable, type Store, type Subscriber, type Unsubscriber, type Update, type Write } from "./store";
 
 
@@ -31,6 +32,7 @@ class ReadOnlyLens<T, U> implements Store<U> {
     }
 
     get(): U {
+        dependencyTrackerContext.register(this);
         return this.lastValue;
     }
 
@@ -68,6 +70,7 @@ export class UpdateableLens<T, U> implements Store<U>, Update<U> {
     }
 
     get(): U {
+        dependencyTrackerContext.register(this);
         return this.lastValue;
     }
 

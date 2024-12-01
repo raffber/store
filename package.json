@@ -2,7 +2,6 @@
 	"name": "store",
 	"private": true,
 	"version": "0.1.0",
-	"main": "store/index.ts",
 	"type": "module",
 	"files": ["dist"],
 	"scripts": {

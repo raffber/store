@@ -21,8 +21,8 @@ class DependencyTrackerContext {
         return ret;
     }
 
-    pop(): DependencyTracker | undefined {
-        return this.trackers.pop();
+    pop(): void {
+        this.trackers.pop();
     }
 
     register(store: Store<unknown>): void {
@@ -37,7 +37,7 @@ class DependencyTrackerContext {
 }
 
 
-export const effectTrackerContext: DependencyTrackerContext = new DependencyTrackerContext();
+export const dependencyTrackerContext: DependencyTrackerContext = new DependencyTrackerContext();
 
 export class Effect {
     private forzen = false;
@@ -72,7 +72,8 @@ export class Effect {
             this.cleanup();
             this.cleanup = undefined;
         }
-        const tracker = effectTrackerContext.push();
+        this.unsubscribe();
+        const tracker = dependencyTrackerContext.push();
         try {
             const cleanup = this.fn();
             if (cleanup) {
@@ -85,7 +86,7 @@ export class Effect {
             }
             this.markedForRun = false;
         } finally {
-            effectTrackerContext.pop();
+            dependencyTrackerContext.pop();
         }
     }
 

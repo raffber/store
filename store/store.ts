@@ -1,6 +1,6 @@
 import { create } from "mutative";
 import type { ExternalOptions } from "mutative/dist/interface.js";
-import { effectTrackerContext } from "./effect";
+import { dependencyTrackerContext } from "./effect";
 import { UpdateableLens } from "./lens";
 
 export type Subscriber = () => void;
@@ -45,7 +45,7 @@ class StoreImpl<T> implements Store<T>, Write<T>, Update<T> {
     }
 
     get(): T {
-        effectTrackerContext.register(this);
+        dependencyTrackerContext.register(this);
         return this._state;
     }
 

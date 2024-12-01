@@ -35,7 +35,7 @@ export function lens<T, U>(store: Store<T> & Update<T>, getter: (state: T) => U,
 
 
 export function lens<T, U>(store: Store<T> | Store<T> & Update<T>, getter: (state: T) => U, setter?: (state: T, newValue: U) => void): Store<U> | Store<U> & Update<U> | Store<U> & Update<U> & Write<U> {
-    if (isUpdateable(store) && setter) {
+    if (isUpdateable(store)) {
         if (setter) {
             return new LensWithSet(store, getter, setter);
         } else {

@@ -7,13 +7,12 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"include": ["src/*.ts", "src/*.tsx", "src/*.json"],
-		"ignore": ["src/pb/*", "src/platform/native/gen/*"]
+		"include": ["store/*.ts", "store/*.tsx", "store/*.json"]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"ignore": ["src/pb/*", "src/platform/native/gen/*"]
+		"ignore": []
 	},
 	"organizeImports": {
 		"enabled": true

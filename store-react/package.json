@@ -1,0 +1,25 @@
+{
+	"name": "@raffber/store-react",
+	"repository": "https://github.com/raffber/store.git",
+	"version": "0.2.0",
+	"dependencies": {
+		"react": "^18.3.1",
+		"@raffber/store": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/react": "^18.3.12",
+		"typescript": "^5.5.3"
+	},
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"scripts": {
+		"prepare": "tsc -b",
+		"build": "tsc -b",
+		"lint": "biome .",
+		"test": "vitest"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	}
+}

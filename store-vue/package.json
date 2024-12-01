@@ -1,0 +1,24 @@
+{
+	"name": "@raffber/store-vue",
+	"repository": "https://github.com/raffber/store.git",
+	"version": "0.2.0",
+	"dependencies": {
+		"vue": "^3",
+		"@raffber/store": "workspace:*"
+	},
+	"devDependencies": {
+		"typescript": "^5.5.3"
+	},
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"scripts": {
+		"prepare": "tsc -b",
+		"build": "tsc -b",
+		"lint": "biome .",
+		"test": "vitest"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	}
+}

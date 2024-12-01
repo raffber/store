@@ -1,23 +1,23 @@
 {
-    "compilerOptions": {
-      "target": "es2020",
-      "strict": true,
-      "esModuleInterop": true,
-      "module": "esnext",
-      "moduleResolution": "bundler",
-      "allowImportingTsExtensions": true,
-      "noUncheckedIndexedAccess": true,
-      "exactOptionalPropertyTypes": true,
-      "verbatimModuleSyntax": true,
-      "declaration": true,
-      "isolatedDeclarations": true,
-      "noEmit": true,
-      "baseUrl": ".",
-      "paths": {
-        "store": ["./store/index.ts"],
-        "store/*": ["./store/*.ts"]
-      }
-    },
-    "include": ["store/**/*", "store-react/**/*"],
-    "exclude": ["node_modules", "dist"]
-  }
+	"compilerOptions": {
+		"target": "es2020",
+		"strict": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"verbatimModuleSyntax": true,
+		"declaration": true,
+		"isolatedDeclarations": true,
+		"outDir": "./dist",
+		"baseUrl": ".",
+		"paths": {
+			"store": ["./store/index.ts"],
+			"store/*": ["./store/*.ts"],
+			"store-react": ["./store-react/index.ts"]
+		}
+	},
+	"include": ["store/**/*", "store-react/**/*"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}

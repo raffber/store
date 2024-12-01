@@ -1,0 +1,5 @@
+packages:
+  - 'store'
+  - 'store-react'
+  - 'store-vue'
+  - 'store-angular'

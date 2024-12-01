@@ -1,10 +1,9 @@
 {
-	"name": "module_prod",
+	"name": "store",
 	"private": true,
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
 		"build": "tsc -b",
 		"lint": "biome .",
 		"test": "vitest",

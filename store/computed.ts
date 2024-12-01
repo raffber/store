@@ -7,6 +7,7 @@ export function computed<T>(fn: () => T): Store<T> {
 
 class Computed<T> implements Store<T> {
 	private subscribers: Set<Subscriber> = new Set();
+	private _recursiveId = 0;
 	private cachedValue: T | undefined;
 	private unsubscribers = <Unsubscriber[]>[];
 	private markForRun = false;
@@ -17,6 +18,9 @@ class Computed<T> implements Store<T> {
 
 	private onChanged() {
 		this.markForRun = true;
+		// at this point we just notify, but we don't recompute the value just yet
+		// we will recompute it when the value is actually needed
+		this.flush();
 	}
 
 	get(): T {
@@ -56,6 +60,17 @@ class Computed<T> implements Store<T> {
 	unsubscribe(): void {
 		for (const unsub of this.unsubscribers) {
 			unsub();
+		}
+	}
+
+	private flush() {
+		this._recursiveId++;
+		const recursiveId = this._recursiveId;
+		for (const subscriber of this.subscribers) {
+			if (recursiveId !== this._recursiveId) {
+				return;
+			}
+			subscriber();
 		}
 	}
 }

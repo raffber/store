@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { type Store, type UpdateableStore, lens, lensWithSet, store as makeStore } from "./store";
+import { type Store, type UpdateableStore, lens, store as makeStore } from "./store";
 
 describe("Store", () => {
     it("should initialize with the given state", () => {
@@ -141,17 +141,17 @@ describe("Store", () => {
     it("can be nested with a custom setter", () => {
         const initialState = { count: 0 };
         const store = makeStore(initialState);
-        const lens = lensWithSet(store,
+        const l = lens(store,
             (state) => state.count,
             (state, newValue) => {
                 state.count = newValue;
             }
         );
         let notified = false;
-        lens.subscribe(() => {
+        l.subscribe(() => {
             notified = true;
         });
-        lens.set(1);
+        l.set(1);
         expect(store.get().count).toBe(1);
         expect(notified).toBe(true);
     });

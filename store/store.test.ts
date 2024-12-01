@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { type Store, type UpdateableStore, lens, store as makeStore } from "./store";
+import { type UpdateableStore, store as makeStore } from "./store";
+import { lens } from "./lens";
 
 describe("Store", () => {
     it("should initialize with the given state", () => {

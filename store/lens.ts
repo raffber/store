@@ -1,0 +1,115 @@
+import { isUpdateable, type Store, type Subscriber, type Unsubscriber, type Update, type Write } from "./store";
+
+
+export function lens<T, U>(store: Store<T>, getter: (state: T) => U): Store<U>
+export function lens<T, U>(store: Store<T> & Update<T>, getter: (state: T) => U): Store<U> & Update<U>
+export function lens<T, U>(store: Store<T> & Update<T>, getter: (state: T) => U, setter: (state: T, newValue: U) => void): Store<U> & Write<U> & Update<U>
+
+
+export function lens<T, U>(store: Store<T> | Store<T> & Update<T>, getter: (state: T) => U, setter?: (state: T, newValue: U) => void): Store<U> | Store<U> & Update<U> | Store<U> & Update<U> & Write<U> {
+    if (isUpdateable(store)) {
+        if (setter) {
+            return new LensWithSet(store, getter, setter);
+        } else {
+            return new UpdateableLens(store, getter);
+        }
+    }
+    return new ReadOnlyLens(store, getter);
+}
+
+
+class ReadOnlyLens<T, U> implements Store<U> {
+    private subscribers: Set<Subscriber> = new Set();
+    private lastValue: U;
+
+    constructor(
+        protected parent: Store<T>,
+        private lens: (_: T) => U
+    ) {
+        this.lastValue = this.lens(parent.get());
+        this.parent.subscribe(() => this._onParentChange());
+    }
+
+    get(): U {
+        return this.lastValue;
+    }
+
+    subscribe(subscriber: Subscriber): Unsubscriber {
+        this.subscribers.add(subscriber);
+        return () => {
+            this.subscribers.delete(subscriber);
+        };
+    }
+
+    private _onParentChange = () => {
+        const v = this.lens(this.parent.get());
+        if (this.lastValue !== undefined && this.lastValue === v) {
+            return;
+        }
+        this.lastValue = v;
+
+        for (const subscriber of this.subscribers) {
+            subscriber();
+        }
+    };
+}
+
+
+export class UpdateableLens<T, U> implements Store<U>, Update<U> {
+    private subscribers: Set<Subscriber> = new Set();
+    private lastValue: U;
+
+    constructor(
+        protected parent: Store<T> & Update<T>,
+        private lens: (_: T) => U
+    ) {
+        this.lastValue = this.lens(parent.get());
+        this.parent.subscribe(() => this._onParentChange());
+    }
+
+    get(): U {
+        return this.lastValue;
+    }
+
+    update(fn: (state: U) => void): void {
+        this.parent.update((state) => {
+            const u = this.lens(state);
+            fn(u);
+        });
+    }
+
+    subscribe(subscriber: Subscriber): Unsubscriber {
+        this.subscribers.add(subscriber);
+        return () => {
+            this.subscribers.delete(subscriber);
+        };
+    }
+
+    private _onParentChange = () => {
+        const v = this.lens(this.parent.get());
+        if (this.lastValue !== undefined && this.lastValue === v) {
+            return;
+        }
+        this.lastValue = v;
+
+        for (const subscriber of this.subscribers) {
+            subscriber();
+        }
+    };
+}
+
+class LensWithSet<T, U> extends UpdateableLens<T, U> implements Write<U> {
+    constructor(
+        parent: Store<T> & Update<T>,
+        getter: (_: T) => U,
+        private setter: (_: T, newValue: U) => void
+    ) {
+        super(parent, getter);
+    }
+
+    set(newState: U): void {
+        this.parent.update((state) => {
+            this.setter(state, newState);
+        });
+    }
+}

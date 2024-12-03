@@ -5,5 +5,14 @@
 	"dependencies": {
 		"mutative": "^1.0.11"
 	},
-	"type": "module"
+	"type": "module",
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"files": ["dist", "src"],
+	"scripts": {
+		"build": "tsc -b",
+		"lint": "biome .",
+		"test": "vitest"
+	}
 }

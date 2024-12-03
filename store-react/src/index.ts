@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { store, type Store, type Subscriber } from "store/store";
+import { store, type Store, type Subscriber } from "store";
 
 export const useStore = <T>(store: Store<T>): T => {
 	return React.useSyncExternalStore(

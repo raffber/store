@@ -1,7 +1,7 @@
 {
 	"name": "store",
 	"private": true,
-	"version": "0.1.0",
+	"workspaces": ["store", "store-react"],
 	"type": "module",
 	"files": ["dist"],
 	"scripts": {
@@ -9,15 +9,5 @@
 		"lint": "biome .",
 		"test": "vitest",
 		"format": "biome format --write ./store ./store-react"
-	},
-	"dependencies": {
-		"mutative": "^1.0.11"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/react": "^18.3.12",
-		"react": "^18.3.1",
-		"typescript": "^5.5.3",
-		"vitest": "^2.1.6"
 	}
 }

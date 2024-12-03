@@ -32,3 +32,17 @@ clean: ## Clean out all generated files
 	rm -rf store/dist
 	rm -rf store-react/node_modules
 	rm -rf store-react/dist
+
+
+.PHONY: pack
+pack: build ## Pack all projects
+	cd $(curdir)/store
+	pnpm pack --pack-destination dist
+
+	cd $(curdir)/store-react
+	pnpm pack --pack-destination dist
+
+	cd $(curdir)
+	mkdir -p dist
+	find store/dist -name "*.tgz" -exec mv {} dist \;
+	find store-react/dist -name "*.tgz" -exec mv {} dist \;

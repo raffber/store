@@ -27,9 +27,8 @@ export function lens<T, U>(
 	if (isUpdateable(store)) {
 		if (setter) {
 			return new LensWithSet(store, getter, setter);
-		} else {
-			return new UpdateableLens(store, getter);
 		}
+		return new UpdateableLens(store, getter);
 	}
 	return new ReadOnlyLens(store, getter);
 }

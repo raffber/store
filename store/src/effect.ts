@@ -1,5 +1,11 @@
 import type { Store, Unsubscriber } from "./store";
 
+export const effect = (fn: EffectCallback): Effect => {
+	const eff = new Effect(fn);
+	eff.run();
+	return eff;
+};
+
 export type Destructor = () => void;
 // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
 export type EffectCallback = () => void | Destructor;
@@ -40,7 +46,7 @@ export const dependencyTrackerContext: DependencyTrackerContext =
 	new DependencyTrackerContext();
 
 export class Effect {
-	private forzen = false;
+	private _frozen = false;
 	private markedForRun = false;
 	private unsubscribers = <Unsubscriber[]>[];
 	private cleanup: Destructor | undefined;
@@ -48,7 +54,7 @@ export class Effect {
 	constructor(private readonly fn: EffectCallback) {}
 
 	private onChanged() {
-		if (this.forzen) {
+		if (this._frozen) {
 			this.markedForRun = true;
 		} else {
 			this.run();
@@ -56,11 +62,15 @@ export class Effect {
 	}
 
 	freeze(): void {
-		this.forzen = true;
+		this._frozen = true;
+	}
+
+	get frozen(): boolean {
+		return this._frozen;
 	}
 
 	thaw(): void {
-		this.forzen = false;
+		this._frozen = false;
 		if (this.markedForRun) {
 			this.markedForRun = false;
 			this.run();
@@ -68,11 +78,11 @@ export class Effect {
 	}
 
 	run(): void {
+		this.unsubscribe();
 		if (this.cleanup) {
 			this.cleanup();
 			this.cleanup = undefined;
 		}
-		this.unsubscribe();
 		const tracker = dependencyTrackerContext.push();
 		try {
 			const cleanup = this.fn();
@@ -90,15 +100,17 @@ export class Effect {
 		}
 	}
 
-	unsubscribe(): void {
+	stop(): void {
+		this.unsubscribe();
+		if (this.cleanup) {
+			this.cleanup();
+			this.cleanup = undefined;
+		}
+	}
+
+	private unsubscribe(): void {
 		for (const unsub of this.unsubscribers) {
 			unsub();
 		}
 	}
 }
-
-export const effect = (fn: EffectCallback): Effect => {
-	const eff = new Effect(fn);
-	eff.run();
-	return eff;
-};

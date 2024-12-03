@@ -37,6 +37,18 @@ export function isUpdateable<T>(
 	return (store as Store<T> & Update<T>).update !== undefined;
 }
 
+export function isWritable<T>(
+	store: Store<T> | (Store<T> & Update<T>),
+): store is Store<T> & Write<T> {
+	return (store as Store<T> & Write<T>).set !== undefined;
+}
+
+export function isWriteAndUpdatable<T>(
+	store: Store<T>,
+): store is Store<T> & Write<T> & Update<T> {
+	return isWritable(store) && isUpdateable(store);
+}
+
 class StoreImpl<T> implements Store<T>, Write<T>, Update<T> {
 	private _state: T;
 	private subscribers: Set<Subscriber>;

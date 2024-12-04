@@ -24,6 +24,10 @@ build: ## Build all projects
 	pnpm run build
 
 
+format: ## Format all projects
+	npx biome format --write $(curdir)/store/src $(curdir)/store-react/src
+
+
 .PHONY: clean
 clean: ## Clean out all generated files
 	cd $(curdir)

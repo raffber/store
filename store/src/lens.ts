@@ -36,13 +36,13 @@ export function lens<T, U>(
 class ReadOnlyLens<T, U> implements Store<U> {
 	private subscribers: Set<Subscriber> = new Set();
 	private lastValue: U;
+	private unsubscribeParent: Unsubscriber | null = null;
 
 	constructor(
 		protected parent: Store<T>,
-		private lens: (_: T) => U,
+		protected lens: (_: T) => U,
 	) {
 		this.lastValue = this.lens(parent.get());
-		this.parent.subscribe(() => this._onParentChange());
 	}
 
 	get(): U {
@@ -51,9 +51,17 @@ class ReadOnlyLens<T, U> implements Store<U> {
 	}
 
 	subscribe(subscriber: Subscriber): Unsubscriber {
+		if (this.subscribers.size === 0) {
+			this.unsubscribeParent = this.parent.subscribe(() =>
+				this._onParentChange(),
+			);
+		}
 		this.subscribers.add(subscriber);
 		return () => {
 			this.subscribers.delete(subscriber);
+			if (this.subscribers.size === 0 && this.unsubscribeParent) {
+				this.unsubscribeParent();
+			}
 		};
 	}
 
@@ -70,21 +78,15 @@ class ReadOnlyLens<T, U> implements Store<U> {
 	};
 }
 
-export class UpdateableLens<T, U> implements Store<U>, Update<U> {
-	private subscribers: Set<Subscriber> = new Set();
-	private lastValue: U;
-
+export class UpdateableLens<T, U>
+	extends ReadOnlyLens<T, U>
+	implements Store<U>, Update<U>
+{
 	constructor(
 		protected parent: Store<T> & Update<T>,
-		private lens: (_: T) => U,
+		lens: (_: T) => U,
 	) {
-		this.lastValue = this.lens(parent.get());
-		this.parent.subscribe(() => this._onParentChange());
-	}
-
-	get(): U {
-		dependencyTrackerContext.register(this);
-		return this.lastValue;
+		super(parent, lens);
 	}
 
 	update(fn: (state: U) => void): void {
@@ -93,25 +95,6 @@ export class UpdateableLens<T, U> implements Store<U>, Update<U> {
 			fn(u);
 		});
 	}
-
-	subscribe(subscriber: Subscriber): Unsubscriber {
-		this.subscribers.add(subscriber);
-		return () => {
-			this.subscribers.delete(subscriber);
-		};
-	}
-
-	private _onParentChange = () => {
-		const v = this.lens(this.parent.get());
-		if (this.lastValue !== undefined && this.lastValue === v) {
-			return;
-		}
-		this.lastValue = v;
-
-		for (const subscriber of this.subscribers) {
-			subscriber();
-		}
-	};
 }
 
 class LensWithSet<T, U> extends UpdateableLens<T, U> implements Write<U> {

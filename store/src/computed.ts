@@ -11,6 +11,7 @@ class Computed<T> implements Store<T> {
 	private cachedValue: T | undefined;
 	private unsubscribers = <Unsubscriber[]>[];
 	private markForRun = false;
+	private deps = new Set<Store<unknown>>();
 
 	constructor(private fn: () => T) {
 		this.cachedValue = this.fn();
@@ -34,33 +35,48 @@ class Computed<T> implements Store<T> {
 		return this.cachedValue as T;
 	}
 
-	refresh() {
-		this.unsubscribe();
+	subscribe(subscriber: Subscriber): Unsubscriber {
+		if (this.subscribers.size === 0) {
+			this.subscribeToDeps();
+		}
+		this.subscribers.add(subscriber);
+		return () => {
+			this.subscribers.delete(subscriber);
+			if (this.subscribers.size === 0) {
+				this.unsubscribeFromDeps();
+			}
+		};
+	}
+
+	private refresh() {
+		this.unsubscribeFromDeps();
 		const tracker = dependencyTrackerContext.push();
 		try {
 			this.cachedValue = this.fn();
-			const deps = tracker.dependencies;
-			for (const dep of deps) {
-				const unsub = dep.subscribe(() => this.onChanged());
-				this.unsubscribers.push(unsub);
-			}
+			this.deps = tracker.dependencies;
+			this.subscribeToDeps();
 			this.markForRun = false;
 		} finally {
 			dependencyTrackerContext.pop();
 		}
 	}
 
-	subscribe(subscriber: Subscriber): Unsubscriber {
-		this.subscribers.add(subscriber);
-		return () => {
-			this.subscribers.delete(subscriber);
-		};
+	private subscribeToDeps() {
+		if (this.subscribers.size === 0) {
+			return;
+		}
+		this.unsubscribeFromDeps();
+		for (const dep of this.deps) {
+			const unsub = dep.subscribe(() => this.onChanged());
+			this.unsubscribers.push(unsub);
+		}
 	}
 
-	unsubscribe(): void {
+	private unsubscribeFromDeps(): void {
 		for (const unsub of this.unsubscribers) {
 			unsub();
 		}
+		this.unsubscribers = [];
 	}
 
 	private flush() {

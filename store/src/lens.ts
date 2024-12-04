@@ -9,10 +9,12 @@ import {
 } from "./store";
 
 export function lens<T, U>(store: Store<T>, getter: (state: T) => U): Store<U>;
+
 export function lens<T, U>(
 	store: Store<T> & Update<T>,
 	getter: (state: T) => U,
 ): Store<U> & Update<U>;
+
 export function lens<T, U>(
 	store: Store<T> & Update<T>,
 	getter: (state: T) => U,

@@ -71,7 +71,7 @@ describe("Computed", () => {
 
 		// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 		const deps: Set<Store<unknown>> = store["deps"];
-		expect(deps.size).toBe(3);
+		expect(deps.size).toBe(1);
 
 		store.subscribe(() => {});
 
@@ -98,7 +98,6 @@ describe("Computed", () => {
 		a.update((state) => {
 			state.count++;
 		});
-		// we expect 2 changes, because the value of a and c changes
-		expect(subs).toHaveBeenCalledTimes(2);
+		expect(subs).toHaveBeenCalledTimes(1);
 	});
 });

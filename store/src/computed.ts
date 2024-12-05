@@ -26,9 +26,6 @@ class Computed<T> implements Store<T> {
 
 	get(): T {
 		dependencyTrackerContext.register(this);
-		for (const dep of this.deps) {
-			dependencyTrackerContext.register(dep);
-		}
 		if (this.cachedValue === undefined) {
 			this.refresh();
 		}

@@ -18,5 +18,8 @@
 		"build": "tsc -b",
 		"lint": "biome .",
 		"test": "vitest run"
+	},
+	"devDependencies": {
+		"typescript": "^5.5.3"
 	}
 }

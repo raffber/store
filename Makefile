@@ -50,3 +50,8 @@ pack: build ## Pack all projects
 	mkdir -p dist
 	find store/dist -name "*.tgz" -exec mv {} dist \;
 	find store-react/dist -name "*.tgz" -exec mv {} dist \;
+
+.PHONY: test
+test: build ## Run all tests
+	cd $(curdir)/store
+	pnpm run test

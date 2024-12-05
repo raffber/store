@@ -1,5 +1,6 @@
 {
 	"name": "store",
+	"repository": "https://github.com/raffber/store.git",
 	"private": true,
 	"packageManager": "pnpm@9.14.4",
 	"type": "module",
@@ -7,7 +8,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsc -b",
+		"build": "make build",
 		"lint": "biome .",
 		"test": "vitest",
 		"format": "biome format --write ./store ./store-react"
@@ -17,5 +18,8 @@
 		"@biomejs/biome": "1.9.4",
 		"typescript": "^5.5.3",
 		"vitest": "^2.1.6"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
 	}
 }

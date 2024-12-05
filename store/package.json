@@ -17,6 +17,6 @@
 		"prepare": "tsc -b",
 		"build": "tsc -b",
 		"lint": "biome .",
-		"test": "vitest"
+		"test": "vitest run"
 	}
 }

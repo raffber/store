@@ -3,7 +3,9 @@
 	"private": true,
 	"packageManager": "pnpm@9.14.4",
 	"type": "module",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsc -b",
 		"lint": "biome .",
@@ -11,6 +13,7 @@
 		"format": "biome format --write ./store ./store-react"
 	},
 	"devDependencies": {
+		"prepare": "tsc -b",
 		"@biomejs/biome": "1.9.4",
 		"typescript": "^5.5.3",
 		"vitest": "^2.1.6"

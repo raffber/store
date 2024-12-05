@@ -71,4 +71,33 @@ describe("effect", () => {
 		expect(cleanup).toBeCalledTimes(1);
 		expect(result).toBe(12);
 	});
+
+	it("should track depenedencies transitively", () => {
+		const a = store({ count: 1 });
+		const b = store({ foo: 1 });
+		const cleanup = vi.fn(() => {});
+
+		let result = 0;
+		const fn = vi.fn(() => {
+			result = 10 + a.get().count + b.get().foo;
+			return cleanup;
+		});
+		const eff = effect(fn);
+		expect(fn).toBeCalledTimes(1);
+		expect(result).toBe(12);
+
+		a.update((state) => {
+			state.count++;
+		});
+		expect(fn).toBeCalledTimes(2);
+		expect(cleanup).toBeCalledTimes(1);
+		expect(result).toBe(13);
+
+		b.update((state) => {
+			state.foo++;
+		});
+		expect(fn).toBeCalledTimes(3);
+		expect(cleanup).toBeCalledTimes(2);
+		expect(result).toBe(14);
+	});
 });

@@ -94,7 +94,8 @@ class StoreImpl<T> implements Store<T>, Write<T>, Update<T> {
 	private flush() {
 		this._recursiveId++;
 		const recursiveId = this._recursiveId;
-		for (const subscriber of this.subscribers) {
+		const subs = Array.from(this.subscribers);
+		for (const subscriber of subs) {
 			if (recursiveId !== this._recursiveId) {
 				return;
 			}

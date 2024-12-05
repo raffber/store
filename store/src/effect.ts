@@ -50,6 +50,7 @@ export class Effect {
 	private markedForRun = false;
 	private unsubscribers = <Unsubscriber[]>[];
 	private cleanup: Destructor | undefined;
+	private _stopped = false;
 
 	constructor(private readonly fn: EffectCallback) {}
 
@@ -101,11 +102,21 @@ export class Effect {
 	}
 
 	stop(): void {
+		this._stopped = true;
 		this.unsubscribe();
 		if (this.cleanup) {
 			this.cleanup();
 			this.cleanup = undefined;
 		}
+	}
+
+	start(): void {
+		this._stopped = false;
+		this.run();
+	}
+
+	get stopped(): boolean {
+		return this._stopped;
 	}
 
 	private unsubscribe(): void {

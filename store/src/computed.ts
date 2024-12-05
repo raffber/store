@@ -14,7 +14,7 @@ class Computed<T> implements Store<T> {
 	private deps = new Set<Store<unknown>>();
 
 	constructor(private fn: () => T) {
-		this.cachedValue = this.fn();
+		this.refresh();
 	}
 
 	private onChanged() {
@@ -25,10 +25,16 @@ class Computed<T> implements Store<T> {
 	}
 
 	get(): T {
+		dependencyTrackerContext.register(this);
+		for (const dep of this.deps) {
+			dependencyTrackerContext.register(dep);
+		}
 		if (this.cachedValue === undefined) {
 			this.refresh();
 		}
-		if (!this.markForRun) {
+		if (!this.markForRun && this.subscribers.size !== 0) {
+			// in case we are not subscribed, we have to refresh the value, because we are not subscribed to the dependencies
+			// this is somewhat inefficient but it's the only(?) way to ensure that we don't have memory leaks
 			return this.cachedValue as T;
 		}
 		this.refresh();
@@ -54,7 +60,9 @@ class Computed<T> implements Store<T> {
 		try {
 			this.cachedValue = this.fn();
 			this.deps = tracker.dependencies;
-			this.subscribeToDeps();
+			if (this.subscribers.size !== 0) {
+				this.subscribeToDeps();
+			}
 			this.markForRun = false;
 		} finally {
 			dependencyTrackerContext.pop();
@@ -62,9 +70,6 @@ class Computed<T> implements Store<T> {
 	}
 
 	private subscribeToDeps() {
-		if (this.subscribers.size === 0) {
-			return;
-		}
 		this.unsubscribeFromDeps();
 		for (const dep of this.deps) {
 			const unsub = dep.subscribe(() => this.onChanged());

@@ -1,6 +1,5 @@
 {
 	"name": "store-react",
-	"private": true,
 	"version": "0.1.0",
 	"dependencies": {
 		"react": "^18.3.1",

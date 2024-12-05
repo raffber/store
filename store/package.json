@@ -1,6 +1,5 @@
 {
 	"name": "store",
-	"private": true,
 	"version": "0.1.0",
 	"dependencies": {
 		"mutative": "^1.0.11"

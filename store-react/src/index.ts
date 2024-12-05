@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { store, type Store, type Subscriber } from "store";
+import React, {
+	useState,
+	type DependencyList,
+	type EffectCallback,
+} from "react";
+import { effect, store, type Store, type Subscriber } from "store";
 
 export const useStore = <T>(store: Store<T>): T => {
 	return React.useSyncExternalStore(
@@ -11,4 +15,15 @@ export const useStore = <T>(store: Store<T>): T => {
 export const useNewStore = <T>(fn: () => T): Store<T> => {
 	const [state] = useState(() => store(fn()));
 	return state;
+};
+
+export const useStoreEffect = <T>(
+	fn: EffectCallback,
+	deps?: DependencyList,
+): void => {
+	// biome-ignore lint/correctness/useExhaustiveDependencies: fn is the function passed to useEffect
+	React.useEffect(() => {
+		const eff = effect(fn);
+		return () => eff.stop();
+	}, deps);
 };

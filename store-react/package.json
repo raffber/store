@@ -1,5 +1,5 @@
 {
-	"name": "store-react",
+	"name": "@raffber/store-react",
 	"repository": "https://github.com/raffber/store.git",
 	"version": "0.1.0",
 	"dependencies": {

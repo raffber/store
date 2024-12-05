@@ -83,4 +83,22 @@ describe("Computed", () => {
 		});
 		expect(store.get()).toBe(55);
 	});
+
+	it("should call the subscriber when the value changes", () => {
+		const a = makeStore({ count: 1 });
+		const b = makeStore({ foo: 1 });
+		const c = computed(() => 42 + a.get().count + b.get().foo);
+
+		const store = computed(() => 10 + c.get());
+		const subs = vi.fn();
+		store.subscribe(subs);
+
+		expect(subs).toHaveBeenCalledTimes(0);
+
+		a.update((state) => {
+			state.count++;
+		});
+		// we expect 2 changes, because the value of a and c changes
+		expect(subs).toHaveBeenCalledTimes(2);
+	});
 });

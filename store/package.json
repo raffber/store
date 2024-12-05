@@ -1,5 +1,6 @@
 {
 	"name": "store",
+	"repository": "https://github.com/raffber/store.git",
 	"version": "0.1.0",
 	"dependencies": {
 		"mutative": "^1.0.11"
@@ -20,5 +21,8 @@
 	},
 	"devDependencies": {
 		"typescript": "^5.5.3"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
 	}
 }

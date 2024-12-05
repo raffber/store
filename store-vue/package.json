@@ -1,13 +1,12 @@
 {
-	"name": "@raffber/store-react",
+	"name": "@raffber/store-vue",
 	"repository": "https://github.com/raffber/store.git",
 	"version": "0.1.0",
 	"dependencies": {
-		"react": "^18.3.1",
+		"vue": "^3",
 		"@raffber/store": "workspace:*"
 	},
 	"devDependencies": {
-		"@types/react": "^18.3.12",
 		"typescript": "^5.5.3"
 	},
 	"exports": {

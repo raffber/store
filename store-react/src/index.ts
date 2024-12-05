@@ -3,7 +3,7 @@ import React, {
 	type DependencyList,
 	type EffectCallback,
 } from "react";
-import { effect, store, type Store, type Subscriber } from "store";
+import { effect, store, type Store, type Subscriber } from "@raffber/store";
 
 export const useStore = <T>(store: Store<T>): T => {
 	return React.useSyncExternalStore(

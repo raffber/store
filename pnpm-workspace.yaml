@@ -1,3 +1,4 @@
 packages:
   - 'store'
   - 'store-react'
+  - 'store-vue'

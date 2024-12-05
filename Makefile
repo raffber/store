@@ -22,10 +22,13 @@ build: ## Build all projects
 	pnpm run build
 	cd $(curdir)/store-react
 	pnpm run build
+	cd $(curdir)/store-vue
+	pnpm run build
 
 
 format: ## Format all projects
-	npx biome format --write $(curdir)/store/src $(curdir)/store-react/src
+	cd $(curdir)
+	npx biome format --write store/src store-react/src store-vue/src
 
 
 .PHONY: clean
@@ -36,6 +39,8 @@ clean: ## Clean out all generated files
 	rm -rf store/dist
 	rm -rf store-react/node_modules
 	rm -rf store-react/dist
+	rm -rf store-vue/node_modules
+	rm -rf store-vue/dist
 
 
 .PHONY: pack
@@ -46,10 +51,14 @@ pack: build ## Pack all projects
 	cd $(curdir)/store-react
 	pnpm pack --pack-destination dist
 
+	cd $(curdir)/store-vue
+	pnpm pack --pack-destination dist
+
 	cd $(curdir)
 	mkdir -p dist
 	find store/dist -name "*.tgz" -exec mv {} dist \;
 	find store-react/dist -name "*.tgz" -exec mv {} dist \;
+	find store-vue/dist -name "*.tgz" -exec mv {} dist \;
 
 
 .PHONY: test

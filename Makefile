@@ -55,3 +55,9 @@ pack: build ## Pack all projects
 test: build ## Run all tests
 	cd $(curdir)/store
 	pnpm run test
+
+.PHONY: login
+login:
+	cd $(curdir)
+	source .env
+	npm config set -- //npm.pkg.github.com/:_authToken=$$GITHUB_TOKEN

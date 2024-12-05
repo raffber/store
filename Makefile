@@ -51,13 +51,31 @@ pack: build ## Pack all projects
 	find store/dist -name "*.tgz" -exec mv {} dist \;
 	find store-react/dist -name "*.tgz" -exec mv {} dist \;
 
+
 .PHONY: test
 test: build ## Run all tests
 	cd $(curdir)/store
 	pnpm run test
 
+
 .PHONY: login
-login:
-	cd $(curdir)
-	source .env
+login: ## Login to GitHub Package Registry
+	@cd $(curdir)
+	if [ -z $${GITHUB_TOKEN+x} ]; then
+		if [[ ! -f .env ]]; then
+			echo "Missing .env file"
+			exit 1
+		fi
+		. .env
+		if [ -z $${GITHUB_TOKEN+x} ]; then
+			echo "Missing GITHUB_TOKEN in .env file"
+			exit 1
+		fi
+	fi
 	npm config set -- //npm.pkg.github.com/:_authToken=$$GITHUB_TOKEN
+
+
+.PHONY: publish
+publish: ## Publish all packages
+	cd $(curdir)
+	pnpm publish -r

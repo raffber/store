@@ -28,6 +28,19 @@ importers:
         specifier: ^5.5.3
         version: 5.7.2
 
+  store-angular:
+    dependencies:
+      '@angular/core':
+        specifier: ^19.0
+        version: 19.0.3(rxjs@7.8.1)(zone.js@0.15.0)
+      '@raffber/store':
+        specifier: workspace:*
+        version: link:../store
+    devDependencies:
+      typescript:
+        specifier: ^5.5.3
+        version: 5.7.2
+
   store-react:
     dependencies:
       '@raffber/store':
@@ -58,6 +71,13 @@ importers:
         version: 5.7.2
 
 packages:
+
+  '@angular/core@19.0.3':
+    resolution: {integrity: sha512-WM844gDzrbHtcM2TJB9DmfCmenUYyNSI6h924CeppDW5oG8ShinQGiWNjF5oI6EZ4tG60uK3QvCm3kjr1dmbOA==}
+    engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
+    peerDependencies:
+      rxjs: ^6.5.3 || ^7.4.0
+      zone.js: ~0.15.0
 
   '@babel/helper-string-parser@7.25.9':
     resolution: {integrity: sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==}
@@ -534,6 +554,9 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
+  rxjs@7.8.1:
+    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
+
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
 
@@ -564,6 +587,9 @@ packages:
   tinyspy@3.0.2:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
+
+  tslib@2.8.1:
+    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
   typescript@5.7.2:
     resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
@@ -644,7 +670,16 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
+  zone.js@0.15.0:
+    resolution: {integrity: sha512-9oxn0IIjbCZkJ67L+LkhYWRyAy7axphb3VgE2MBDlOqnmHMPWGYMxJxBYFueFq/JGY2GMwS0rU+UCLunEmy5UA==}
+
 snapshots:
+
+  '@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)':
+    dependencies:
+      rxjs: 7.8.1
+      tslib: 2.8.1
+      zone.js: 0.15.0
 
   '@babel/helper-string-parser@7.25.9': {}
 
@@ -1043,6 +1078,10 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.28.0
       fsevents: 2.3.3
 
+  rxjs@7.8.1:
+    dependencies:
+      tslib: 2.8.1
+
   siginfo@2.0.0: {}
 
   source-map-js@1.2.1: {}
@@ -1060,6 +1099,8 @@ snapshots:
   tinyrainbow@1.2.0: {}
 
   tinyspy@3.0.2: {}
+
+  tslib@2.8.1: {}
 
   typescript@5.7.2: {}
 
@@ -1136,3 +1177,5 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  zone.js@0.15.0: {}

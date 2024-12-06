@@ -72,10 +72,7 @@ class StoreImpl<T> implements Store<T>, Write<T>, Update<T> {
 	update(fn: (state: T) => void): void {
 		const opts: ExternalOptions<false, false> = {
 			mark: (target) => {
-				if (target instanceof StoreImpl) {
-					return () => target;
-				}
-				if (target instanceof UpdateableLens) {
+				if (target.prototype !== undefined) {
 					return () => target;
 				}
 			},

@@ -100,3 +100,18 @@ login: ## Login to GitHub Package Registry
 publish: ## Publish all packages
 	cd $(curdir)
 	pnpm publish -r
+
+
+.PHONY: set-version
+set-version: ## Set version for all projects
+	cd $(curdir)
+	version=$$(cat package.json | jq -r '.version')
+	echo "Setting version to $$version"
+	cd $(curdir)/store
+	pnpm version $$version
+	cd $(curdir)/store-react
+	pnpm version $$version
+	cd $(curdir)/store-vue
+	pnpm version $$version
+	cd $(curdir)/store-angular
+	pnpm version $$version

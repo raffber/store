@@ -2,7 +2,7 @@
 	"name": "@raffber/store",
 	"repository": "https://github.com/raffber/store.git",
 	"packageManager": "pnpm@9.14.4",
-	"verson": "0.1.0",
+	"version": "0.2.0",
 	"type": "module",
 	"files": [
 		"dist"

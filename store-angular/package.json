@@ -1,7 +1,7 @@
 {
 	"name": "@raffber/store-angular",
 	"repository": "https://github.com/raffber/store.git",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"dependencies": {
 		"@angular/core": "^19.0",
 		"@raffber/store": "workspace:*"

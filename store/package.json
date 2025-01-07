@@ -1,7 +1,7 @@
 {
 	"name": "@raffber/store",
 	"repository": "https://github.com/raffber/store.git",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"dependencies": {
 		"mutative": "^1.0.11"
 	},
@@ -9,10 +9,7 @@
 	"exports": {
 		".": "./dist/index.js"
 	},
-	"files": [
-		"dist",
-		"src"
-	],
+	"files": ["dist", "src"],
 	"scripts": {
 		"prepare": "tsc -b",
 		"build": "tsc -b",

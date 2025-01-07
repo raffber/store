@@ -5,7 +5,7 @@ export {
 	type Update,
 	type Subscriber,
 	type Unsubscriber,
-	type UpdateableStore,
+	type UpdatableStore,
 	type WritableStore,
 	isUpdateable,
 	isWritable,

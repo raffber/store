@@ -1,7 +1,5 @@
 import { create } from "mutative";
-import type { ExternalOptions } from "mutative/dist/interface.js";
 import { dependencyTrackerContext } from "./effect";
-import { UpdateableLens } from "./lens";
 
 export type Subscriber = () => void;
 export type Unsubscriber = () => void;
@@ -27,7 +25,7 @@ export const store: <T>(initalState: T) => Store<T> & Write<T> & Update<T> = <
 	return new StoreImpl(initialState);
 };
 
-export type UpdateableStore<T> = Store<T> & Update<T>;
+export type UpdatableStore<T> = Store<T> & Update<T>;
 
 export type WritableStore<T> = Store<T> & Write<T> & Update<T>;
 

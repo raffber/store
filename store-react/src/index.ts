@@ -3,7 +3,14 @@ import React, {
 	type DependencyList,
 	type EffectCallback,
 } from "react";
-import { effect, store, type Store, type Subscriber } from "@raffber/store";
+import {
+	effect,
+	store,
+	type Store,
+	type Subscriber,
+	type Update,
+	type Write,
+} from "@raffber/store";
 
 export const useStore = <T>(store: Store<T>): T => {
 	return React.useSyncExternalStore(
@@ -12,7 +19,9 @@ export const useStore = <T>(store: Store<T>): T => {
 	);
 };
 
-export const useNewStore = <T>(fn: () => T): Store<T> => {
+export const useNewStore = <T>(
+	fn: () => T,
+): Store<T> & Write<T> & Update<T> => {
 	const [state] = useState(() => store(fn()));
 	return state;
 };

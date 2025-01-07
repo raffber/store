@@ -1,7 +1,7 @@
 {
 	"name": "@raffber/store-react",
 	"repository": "https://github.com/raffber/store.git",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"dependencies": {
 		"react": "^18.3.1",
 		"@raffber/store": "workspace:*"
